@@ -65,7 +65,7 @@ def main():
             position = (animal_data['x'], animal_data['y'])
             temperature = animal_data.get('temperature', 'N/A')
             update_dashboard(screen, animal, temperature_display, position, temperature)
-        time.sleep(1)  # 根据需要调整延迟时间
+        time.sleep(10)  # 根据需要调整延迟时间
 
 if __name__ == "__main__":
     main()
