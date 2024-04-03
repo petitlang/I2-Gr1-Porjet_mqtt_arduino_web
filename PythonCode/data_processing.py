@@ -1,42 +1,62 @@
 # 处理从Arduino设备接收的数据，可能包括解析、存储和准备数据以供仪表板使用。
+import sqlite3
 import paho.mqtt.client as mqtt
 
-# 定义用于存储动物数据的字典
-animal_data = {}
+# 数据库文件路径
+db_path = 'animal_tracking.db'
 
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc)) # 函数参数rc（result code）是一个表示连接结果的代码，0表示连接成功，其他值则表示连接出现了问题。
-    # 在这里订阅以确保连接建立后立即订阅
-    client.subscribe("Panda")
+# 检查并创建表
+def setup_database():
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS animal_data (
+            name TEXT PRIMARY KEY,
+            x INTEGER,
+            y INTEGER,
+            temperature REAL
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
+def update_database(name, x, y, temperature):
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    # 使用REPLACE来更新或插入新记录
+    c.execute('REPLACE INTO animal_data (name, x, y, temperature) VALUES (?, ?, ?, ?)',
+              (name, x, y, temperature))
+    conn.commit()
+    conn.close()
+
+# MQTT消息回调
 def on_message(client, userdata, msg):
-    # 解析收到的消息
     valeur = msg.payload.decode("utf-8")
     print(msg.topic + " " + valeur)
     
-    # 解析动物信息
     try:
         elements = valeur.split(":")
         name = elements[0]  # 动物名
         x = int(elements[1])  # X坐标
         y = int(elements[2])  # Y坐标
-        # 检查是否有温度数据
         temperature = None
         if len(elements) > 3 and elements[3].startswith('T='):
             temperature = float(elements[3][2:])
         
-        # 更新动物数据
-        animal_data[name] = {'x': x, 'y': y, 'temperature': temperature}
-        print(f"Updated data for {name}: {animal_data[name]}")
+        # 更新数据库
+        update_database(name, x, y, temperature)
     except Exception as e:
         print(f"Error processing message - {e}")
 
-client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "Panda")
-client.on_connect = on_connect
-client.on_message = on_message
+def main():
+    # 检查并设置数据库
+    setup_database()
+    
+    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "Panda")
+    client.connect("srv-lora.isep.fr")  # 以实际使用的broker地址和端口替换
+    client.subscribe("Panda")
+    client.on_message = on_message
+    client.loop_forever()
 
-# 使用了isep的broker
-client.connect("srv-lora.isep.fr")
-
-# 开始MQTT客户端循环，以便持续监听消息
-client.loop_forever()
+if __name__ == "__main__":
+    main()
