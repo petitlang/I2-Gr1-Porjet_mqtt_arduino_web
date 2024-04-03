@@ -1,4 +1,5 @@
 # 使用Python图形库（如turtle）实现的基础仪表板，展示动物位置和警报。
+import time
 import turtle
 
 def setup_dashboard():
