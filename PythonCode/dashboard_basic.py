@@ -1,58 +1,71 @@
-# 使用Python图形库（如turtle）实现的基础仪表板，展示动物位置和警报。
-import time
+import sqlite3
 import turtle
+import time
+
+# 数据库文件路径
+db_path = 'animal_tracking.db'
+
+def read_animal_data(name):
+    """从数据库读取指定动物的数据"""
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('SELECT x, y, temperature FROM animal_data WHERE name = ?', (name,))
+    data = c.fetchone()
+    conn.close()
+    if data:
+        return {'x': data[0], 'y': data[1], 'temperature': data[2]}
+    else:
+        return None
 
 def setup_dashboard():
-    # 设置画布
+    """设置画布和初始图形对象"""
     screen = turtle.Screen()
     screen.title("Animal Dashboard")
     screen.setup(width=600, height=600)
-    screen.tracer(0)
-
-    # 画布边界
-    turtle.penup()
-    turtle.goto(-250, -250)
-    turtle.pendown()
-    turtle.goto(-250, 250)
-    turtle.goto(250, 250)
-    turtle.goto(250, -250)
-    turtle.goto(-250, -250)
-    turtle.penup()
-
+    screen.tracer(0)  # 关闭自动刷新
+    
+    # 绘制边界
+    border = turtle.Turtle()
+    border.penup()
+    border.goto(-250, -250)
+    border.pendown()
+    for _ in range(4):
+        border.forward(500)
+        border.left(90)
+    border.hideturtle()
+    
     # 创建动物图标
     animal = turtle.Turtle()
     animal.shape("turtle")
     animal.penup()
-
+    
     # 创建温度显示
     temperature_display = turtle.Turtle()
     temperature_display.penup()
     temperature_display.hideturtle()
     temperature_display.goto(-200, 250)
     
-    return animal, temperature_display
+    return screen, animal, temperature_display
 
-def update_dashboard(animal, temperature_display, position, temperature):
-    # 更新动物位置
+def update_dashboard(screen, animal, temperature_display, position, temperature):
+    """更新仪表板上的动物位置和温度"""
     animal.goto(position)
-    
-    # 更新温度显示
     temperature_display.clear()
-    temperature_display.write(f"Temperature: {temperature} °C", font=("Arial", 12, "normal"))
+    if temperature is not None:
+        temperature_display.write(f"Temperature: {temperature} °C", font=("Arial", 12, "normal"))
+    screen.update()  # 手动刷新屏幕
 
 def main():
-    # 初始化仪表板
-    animal, temperature_display = setup_dashboard()
+    screen, animal, temperature_display = setup_dashboard()
     
     while True:
-        # 模拟获取位置和温度数据
-        # 这里假设位置数据是一个二元元组 (x, y)，温度数据是一个整数
-        
-        # 更新仪表板
-        update_dashboard(animal, temperature_display, animal_position, temperature)
-        
-        # 延迟一段时间
-        time.sleep(10)  # 这里的时间延迟应与Arduino代码中发送数据的频率相匹配
+        # 这里我们以"Panda"为例
+        animal_data = read_animal_data('Panda')
+        if animal_data:
+            position = (animal_data['x'], animal_data['y'])
+            temperature = animal_data.get('temperature', 'N/A')
+            update_dashboard(screen, animal, temperature_display, position, temperature)
+        time.sleep(1)  # 根据需要调整延迟时间
 
 if __name__ == "__main__":
     main()
