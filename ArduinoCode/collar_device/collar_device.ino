@@ -1,5 +1,5 @@
 // Code exécuté sur une carte Arduino MKRWAN pour simuler le mouvement d'un animal, 
-//envoyant des données de localisation (et des données de santé facultatives) toutes les 10 secondes.
+// envoyant des données de localisation (et des données de santé facultatives) toutes les 10 secondes.
 #include <MKRWAN.h>
 
 LoRaModem modem;
@@ -12,7 +12,7 @@ void setup() {
   while (!Serial);
   if (!modem.begin(EU868)) {
     Serial.println("Failed to start module");
-    while (1) {}   //if lora failed, it will stop the execution 
+    while (1) {}   // if lora failed, it will stop the execution 
   };
   Serial.print("Your module version is: ");
   Serial.println(modem.version());
