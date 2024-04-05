@@ -12,7 +12,7 @@ void setup() {
   while (!Serial);
   if (!modem.begin(EU868)) {
     Serial.println("Failed to start module");
-    while (1) {}
+    while (1) {}   //if lora failed, it will stop the execution 
   };
   Serial.print("Your module version is: ");
   Serial.println(modem.version());
