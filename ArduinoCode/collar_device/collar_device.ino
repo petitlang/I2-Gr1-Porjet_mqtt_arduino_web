@@ -4,11 +4,11 @@
 
 LoRaModem modem;
 
-String appEui = SECRET_APP_EUI;
-String appKey = SECRET_APP_KEY;
+String appEui = "";
+String appKey = "";
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   while (!Serial);
   if (!modem.begin(EU868)) {
     Serial.println("Failed to start module");
