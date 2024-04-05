@@ -2,11 +2,11 @@ import sqlite3
 import turtle
 import time
 
-# 数据库文件路径
+## Chemin du fichier de base de données
 db_path = 'animal_tracking.db'
 
 def read_animal_data(name):
-    """从数据库读取指定动物的数据"""
+    """Lire les données de l'animal spécifié dans la base de données"""
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     c.execute('SELECT x, y, temperature FROM animal_data WHERE name = ?', (name,))
@@ -18,13 +18,13 @@ def read_animal_data(name):
         return None
 
 def setup_dashboard():
-    """设置画布和初始图形对象"""
+    """Configurer le canevas et les objets graphiques initiaux"""
     screen = turtle.Screen()
     screen.title("Animal Dashboard")
     screen.setup(width=600, height=600)
-    screen.tracer(0)  # 关闭自动刷新
+    screen.tracer(0)  # Désactiver l'actualisation automatique
     
-    # 绘制边界
+    # tracer des frontières
     border = turtle.Turtle()
     border.penup()
     border.goto(-250, -250)
@@ -34,12 +34,12 @@ def setup_dashboard():
         border.left(90)
     border.hideturtle()
     
-    # 创建动物图标
+    # Créer une icône d'animal
     animal = turtle.Turtle()
     animal.shape("turtle")
     animal.penup()
     
-    # 创建温度显示
+    # Créer un affichage de la température
     temperature_display = turtle.Turtle()
     temperature_display.penup()
     temperature_display.hideturtle()
@@ -48,24 +48,24 @@ def setup_dashboard():
     return screen, animal, temperature_display
 
 def update_dashboard(screen, animal, temperature_display, position, temperature):
-    """更新仪表板上的动物位置和温度"""
+    """update dashboard"""
     animal.goto(position)
     temperature_display.clear()
     if temperature is not None:
         temperature_display.write(f"Temperature: {temperature} °C", font=("Arial", 12, "normal"))
-    screen.update()  # 手动刷新屏幕
+    screen.update()  # Actualiser manuellement l'écran
 
 def main():
     screen, animal, temperature_display = setup_dashboard()
     
     while True:
-        # 这里我们以"Panda"为例
+        # we use panda
         animal_data = read_animal_data('Panda')
         if animal_data:
             position = (animal_data['x'], animal_data['y'])
             temperature = animal_data.get('temperature', 'N/A')
             update_dashboard(screen, animal, temperature_display, position, temperature)
-        time.sleep(10)  # 根据需要调整延迟时间
+        time.sleep(10)  # Ajustez le temps de retard si nécessaire
 
 if __name__ == "__main__":
     main()
