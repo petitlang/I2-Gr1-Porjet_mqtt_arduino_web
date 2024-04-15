@@ -1,6 +1,7 @@
 import sqlite3
 import turtle
 import time
+import tkinter as tk
 
 ## Chemin du fichier de base de données
 db_path = 'animal_tracking.db'
@@ -55,6 +56,17 @@ def update_dashboard(screen, animal, temperature_display, position, temperature)
         temperature_display.write(f"Temperature: {temperature} °C", font=("Arial", 12, "normal"))
     screen.update()  # Actualiser manuellement l'écran
 
+def check_position_warning(position):
+    """détection de position pour l'alarm"""
+    min_x, min_y = -200, -200
+    max_x, max_y = 200, 200
+    if position[0] < min_x or position[0] > max_x or position[1] < min_y or position[1] > max_y:
+        # send alarm
+        root = tk.Tk()
+        root.withdraw()
+        tk.messagebox.showwarning("Warning", "Animal position is out of bounds!")
+        root.destroy()
+
 def main():
     screen, animal, temperature_display = setup_dashboard()
     
@@ -65,6 +77,7 @@ def main():
             position = (animal_data['x'], animal_data['y'])
             temperature = animal_data.get('temperature', 'N/A')
             update_dashboard(screen, animal, temperature_display, position, temperature)
+            check_position_warning(position)  # 检查位置并发出警告消息
         time.sleep(10)  # Ajustez le temps de retard si nécessaire
 
 if __name__ == "__main__":
