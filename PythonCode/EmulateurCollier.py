@@ -20,7 +20,7 @@ def publie_msg(msg_json):
 
 # Programme principal
 
-colliers = ["Marguerite", "Medor", "Felix"]
+colliers = ["Panda"] # "Marguerite", "Medor", "Felix"
 
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "hal")
 client.connect("srv-lora.isep.fr")
