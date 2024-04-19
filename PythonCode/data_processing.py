@@ -4,6 +4,7 @@ le stockage et la préparation des données en vue de leur utilisation dans les 
 '''
 import sqlite3
 import paho.mqtt.client as mqtt
+import json
 
 # path database
 db_path = 'animal_tracking.db'
@@ -41,11 +42,16 @@ def update_database(name, x, y, temperature):
 
 # MQTT_ON_MSG
 def on_message(client, userdata, msg):
-    valeur = msg.payload.decode("utf-8")
-    print(msg.topic + " " + valeur)
+    # valeur = msg.payload.decode("utf-8")
+    # print(msg.topic + " " + valeur)
+    raw_data = msg.payload.decode("utf-8")
+    print(msg.topic + " " + raw_data)
     
     try:
-        elements = valeur.split(":")
+        data_json = json.loads(raw_data)  # 解析 JSON 数据
+        message = data_json['object']['message']  # 从 JSON 中提取消息字符串
+        elements = message.split(":")
+        # elements = valeur.split(":")
         name = elements[0]  # nom animal
         x = int(elements[1])  # X coordonnée
         y = int(elements[2])  # Y coordonnée
@@ -63,7 +69,8 @@ def main():
     setup_database()
     
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "Panda")
-    client.connect("srv-lora.isep.fr")
+    # client.connect("srv-lora.isep.fr")
+    client.connect("broker.hivemq.com")
     client.subscribe("Panda")
     client.on_message = on_message
     client.loop_forever()

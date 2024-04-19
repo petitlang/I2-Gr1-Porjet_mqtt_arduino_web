@@ -16,15 +16,17 @@ def ajoute_json(msg):
 
 def publie_msg(msg_json):
     print(f"Publie : \"{msg_json}\"...")
-    client.publish("emulateur_colliers", msg_json)
+    client.publish(msg_topic, msg_json)
 
 # Programme principal
 
 colliers = ["Panda"] # "Marguerite", "Medor", "Felix"
 
+msg_topic = "Panda" # "emulateur_colliers"
+
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "hal")
-client.connect("srv-lora.isep.fr")
-#client.connect("broker.hivemq.com")
+# client.connect("srv-lora.isep.fr")
+client.connect("broker.hivemq.com")
 
 while True:
     for collier in colliers:
