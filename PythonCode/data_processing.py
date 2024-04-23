@@ -42,16 +42,16 @@ def update_database(name, x, y, temperature):
 
 # MQTT_ON_MSG
 def on_message(client, userdata, msg):
-    # valeur = msg.payload.decode("utf-8")
-    # print(msg.topic + " " + valeur)
-    raw_data = msg.payload.decode("utf-8")
-    print(msg.topic + " " + raw_data)
+    valeur = msg.payload.decode("utf-8")
+    print(msg.topic + " " + valeur)
+    # raw_data = msg.payload.decode("utf-8")
+    # print(msg.topic + " " + raw_data)
     
     try:
-        data_json = json.loads(raw_data)  # 解析 JSON 数据
-        message = data_json['object']['message']  # 从 JSON 中提取消息字符串
-        elements = message.split(":")
-        # elements = valeur.split(":")
+        # data_json = json.loads(raw_data)  # 解析 JSON 数据
+        # message = data_json['object']['message']  # 从 JSON 中提取消息字符串
+        # elements = message.split(":")
+        elements = valeur.split(":")
         name = elements[0]  # nom animal
         x = int(elements[1])  # X coordonnée
         y = int(elements[2])  # Y coordonnée

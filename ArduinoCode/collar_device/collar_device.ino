@@ -35,7 +35,7 @@ void loop() {
   
   // create string of msg
   String message = "Panda:" + String(x) + ":" + String(y) + ":T=" + String(temperature);
-  Serial.print("Sending: " + message + " - ");
+  Serial.print("Sending: " + topic + message + " - ");
   
   // send msg
   int err;
