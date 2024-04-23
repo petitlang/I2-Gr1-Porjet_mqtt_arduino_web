@@ -69,8 +69,7 @@ def main():
     setup_database()
     
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "Panda")
-    # client.connect("srv-lora.isep.fr")
-    client.connect("broker.hivemq.com")
+    client.connect("srv-lora.isep.fr")
     client.subscribe("Panda")
     client.on_message = on_message
     client.loop_forever()
