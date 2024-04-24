@@ -1,7 +1,3 @@
-'''
-Traitement des données reçues des dispositifs Arduino, ce qui peut inclure l'analyse,
-le stockage et la préparation des données en vue de leur utilisation dans les tableaux de bord.
-'''
 import sqlite3
 import paho.mqtt.client as mqtt
 import json
@@ -24,7 +20,7 @@ def setup_database():
     conn.commit()
     conn.close()
 
-def update_database(name, x, y, temperature):
+def update_database(name, x, y, temperature=None):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
     try:
@@ -42,25 +38,25 @@ def update_database(name, x, y, temperature):
 
 # MQTT_ON_MSG
 def on_message(client, userdata, msg):
-    valeur = msg.payload.decode("utf-8")
-    print(msg.topic + " " + valeur)
-    # raw_data = msg.payload.decode("utf-8")
-    # print(msg.topic + " " + raw_data)
+    raw_data = msg.payload.decode("utf-8")
+    print(msg.topic + " " + raw_data)
     
     try:
-        # data_json = json.loads(raw_data)  # 解析 JSON 数据
-        # message = data_json['object']['message']  # 从 JSON 中提取消息字符串
-        # elements = message.split(":")
-        elements = valeur.split(":")
-        name = elements[0]  # nom animal
-        x = int(elements[1])  # X coordonnée
-        y = int(elements[2])  # Y coordonnée
+        data_json = json.loads(raw_data)  # 解析 JSON 数据
+        message = data_json['object']['message']  # 从 JSON 中提取消息字符串
+        elements = message.split(":")
+        name = elements[0]
+        x = int(elements[1])
+        y = int(elements[2])
+        
         temperature = None
+        # 假设你的数据还包含温度，类似 'T=23.5'
         if len(elements) > 3 and elements[3].startswith('T='):
             temperature = float(elements[3][2:])
-        
+
         # update database within a transaction
         update_database(name, x, y, temperature)
+        print(f"ok for update {name, x, y, temperature}")
     except Exception as e:
         print(f"Error processing message - {e}")
 
