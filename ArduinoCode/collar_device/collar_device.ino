@@ -4,8 +4,8 @@
 
 LoRaModem modem;
 
-String appEui = "";
-String appKey = "";
+String appEui = "a8610a3435315d10"; // carte A01
+String appKey = "0101010101010101";
 
 void setup() {
   Serial.begin(9600);
@@ -35,7 +35,7 @@ void loop() {
   
   // create string of msg
   String message = "Panda:" + String(x) + ":" + String(y) + ":T=" + String(temperature);
-  Serial.print("Sending: " + topic + message + " - ");
+  Serial.print("Sending: "  + message + " - ");
   
   // send msg
   int err;

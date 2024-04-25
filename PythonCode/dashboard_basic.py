@@ -38,7 +38,8 @@ def setup_dashboard():
     # Créer une icône d'animal
     animal = turtle.Turtle()
     animal.shape("turtle")
-    animal.penup()
+    # animal.penup()
+    animal.pendown()
     
     # Créer un affichage de la température
     temperature_display = turtle.Turtle()
@@ -78,7 +79,7 @@ def main():
             temperature = animal_data.get('temperature', 'N/A')
             update_dashboard(screen, animal, temperature_display, position, temperature)
             check_position_warning(position)  # 检查位置并发出警告消息
-        time.sleep(10)  # Ajustez le temps de retard si nécessaire
+        time.sleep(1)  # Ajustez le temps de retard si nécessaire
 
 if __name__ == "__main__":
     main()

@@ -66,7 +66,7 @@ def main():
     
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "Panda")
     client.connect("srv-lora.isep.fr")
-    client.subscribe("Panda")
+    client.subscribe("#")
     client.on_message = on_message
     client.loop_forever()
 
