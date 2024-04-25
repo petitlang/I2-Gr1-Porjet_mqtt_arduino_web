@@ -8,14 +8,13 @@ Auteur : Mouzheng LI, Lianghong LI, Guokuang DENG, Zhendong XU
 Project/  
 │  
 ├── PythonCode/  
-│   ├── data_processing.py  # 数据处理脚本  
-│   └── dashboard_basic.py  # 基础版仪表板实现（使用turtle等）  
+│   ├── data_processing.py  # Pour recevoire les messages et creer une base des donnees  
+│   └── dashboard_basic.py  # interface par fonction python "turtle" et lire les donnees de la base des donnees  
 │  
 ├── ArduinoCode/  
-│   └── collar_device.ino   # Arduino项圈设备代码，包括数据发送逻辑  
+│   └── collar_device.ino   # Arduino MKRWAN, envoyer les messages par LoraWan  
 │  
-└── WebInterface/  # 使用Flask或Django等Python Web框架  
-    ├── app.py             # 主应用程序，定义路由和视图  
-    ├── templates/         # 存放HTML文件的文件夹  
-    │   └── position.html     # 网页版仪表板的HTML结构  
-   
+└── WebInterface/  # utilise Flask et HTML  
+    ├── app.py             # Action de Web par python-Flask  
+    ├── templates/         # dossier pour poser les fiches de HTML  
+    │   └── position.html     # webInterface  
