@@ -7,7 +7,9 @@ import json
 def genere_msg(id):
     x = random.randint(-250,250)
     y = random.randint(-250,250)
-    return f"{id}:{x}:{y}"
+    t = random.randrange(38,50)
+    temp = f"T={t}"
+    return f"{id}:{x}:{y}:{temp}"
 
 
 def ajoute_json(msg):

@@ -22,7 +22,7 @@
     position: relative;
   }
   #position {
-    width: 200px;
+    width: 350px;
     height: 50px;
     position: absolute;
   }
@@ -42,10 +42,11 @@
   <div id="bg">
     <div id="position">
       <div id="point"></div>
-      <div id="position-name">{{ nom }}(x: {{ x }}, y: {{ y }} ,temperature: {{temperature}})</div>
+      <div id="position-name">{{ nom }}(x: {{ x }}, y: {{ y }}) - T: {{temperature}}°C</div>
+      <div id="warning"></div>
     </div>
   </div>
-  <div id="warning"></div>
+  
 
 <script>
   const position = document.getElementById('position');

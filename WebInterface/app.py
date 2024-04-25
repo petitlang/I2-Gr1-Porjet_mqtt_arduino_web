@@ -10,11 +10,11 @@ db_path = 'animal_tracking.db'
 def get_animal_data():
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
-    c.execute("SELECT name, x, y FROM animal_data WHERE name='Panda'")
+    c.execute("SELECT name, x, y ,temperature FROM animal_data WHERE name='Panda'")
     data = c.fetchone()
     conn.close()
     if data:
-        return {'name': data[0], 'x': data[1], 'y': data[2] ,'temperature':data[3]}
+        return {'name': data[0], 'x': data[1], 'y': data[2],'temperature': data[3]}
     return None
 
 @app.route('/')
