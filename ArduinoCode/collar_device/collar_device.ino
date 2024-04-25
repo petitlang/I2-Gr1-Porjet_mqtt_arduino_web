@@ -5,7 +5,7 @@
 LoRaModem modem;
 
 String appEui = "a8610a3435315d10"; // carte A01
-String appKey = "0101010101010101";
+String appKey = "01010101010101010101010101010101";
 
 void setup() {
   Serial.begin(9600);
