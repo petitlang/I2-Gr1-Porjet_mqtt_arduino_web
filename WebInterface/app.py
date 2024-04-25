@@ -14,14 +14,14 @@ def get_animal_data():
     data = c.fetchone()
     conn.close()
     if data:
-        return {'name': data[0], 'x': data[1], 'y': data[2]}
+        return {'name': data[0], 'x': data[1], 'y': data[2] ,'temperature':data[3]}
     return None
 
 @app.route('/')
 def position():
     data = get_animal_data()
     if data:
-        return flask.render_template("position.html", nom=data['name'], x=data['x'], y=data['y'])
+        return flask.render_template("position.html", nom=data['name'], x=data['x'], y=data['y'], temperature=data['temperature'])
     return "No data available"
 
 if __name__ == '__main__':
