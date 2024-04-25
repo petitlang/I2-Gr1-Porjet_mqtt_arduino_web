@@ -1,7 +1,7 @@
 # Projet_MQTT_Arduino_Web
 
 Etablisement : ISEP  
-Auteur : Mouzheng LI, Lianghong LI, Guokuang DENG, Zhendong XU  
+Auteur : Mouzheng LI, Lianghong LI, Guokuang DENG, Zhendong XU, Yuefan LIU  
 
 ## Structure
 
